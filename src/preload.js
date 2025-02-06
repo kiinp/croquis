@@ -31,4 +31,5 @@ contextBridge.exposeInMainWorld('api', {
     openFolder: async () => await ipcRenderer.invoke('open-folder-dialog'),
     addFolder: async (args) => await ipcRenderer.invoke('add-folder', args),
     setOption: async (options) => await ipcRenderer.invoke('set-option', options),
+    getAppVersion: async () => await ipcRenderer.invoke('get-app-version'),
 });

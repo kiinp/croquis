@@ -40,7 +40,6 @@ app.whenReady().then(async () => {
   windowManager.createMainWindow();
   ipcHandlers.optionHandler.initOption();
   const validRootDirectory = await checkRootDirectoryPath();
-  console.log(validRootDirectory)
   if (!validRootDirectory) {
     let optionWindow = windowManager.getOptionWindow();
 

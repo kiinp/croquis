@@ -1,6 +1,14 @@
 let option;
 
 window.addEventListener('DOMContentLoaded', async () => {
+  window.api.getAppVersion().then((version)=>{
+    document.querySelector("span.version").innerHTML = version;
+  });
+
+  document.querySelector("div.update-check-btn").addEventListener("click", ()=>{
+    window.api.send("check-for-updates");
+  });
+
   option = await window.api.getOption();
 
   function applyOptionGlobal(option) {

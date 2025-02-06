@@ -1,4 +1,4 @@
-const { dialog, ipcMain } = require('electron');
+const { dialog, ipcMain, app } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const dns = require('dns');
 
@@ -30,6 +30,10 @@ ipcMain.on('check-for-updates', (event, arg) => {
             });
         }
     });
+});
+
+ipcMain.handle('get-app-version', () => {
+    return app.getVersion();
 });
 
 module.exports = {
