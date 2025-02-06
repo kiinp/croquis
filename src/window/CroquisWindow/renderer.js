@@ -33,6 +33,7 @@ class Croquis {
         this.historyIdList = [];
         this.timerRequestId = null;
         this.folderId=1;
+        this.isAutoSkipped = false;
 
         this.applyOption();
         this.startCurrentIndex();
@@ -47,6 +48,7 @@ class Croquis {
         //change image
         this.croquisUI.changeImageEl(this.getCurrentImagePath());
         this.alreadySave = false;
+        this.isAutoSkipped = false;
         this.resetTimer();
         this.startTimer();
     }
@@ -82,7 +84,7 @@ class Croquis {
         let maxTime = calendar.getTimeMinAndSecFromSec(this.option.timer.maxTime);
 
         this.croquisUI.updateTimerEl({ currentTime, maxTime });
-        if (this.checkEndTimer()) {
+        if (!this.isAutoSkipped && this.checkEndTimer()) {
             await this.skip(true);
             return;
         }
@@ -133,12 +135,18 @@ class Croquis {
         if (this.isSkipping) {
             return;
         }
+        if (isAuto && this.isAutoSkipped){
+            return;
+        }
+        if(isAuto){
+            this.isAutoSkipped = true;
+        }
         this.isSkipping = true;
 
         this.stopTimer();
-
         if (isAuto && !this.option.auto.skip) {
             this.isSkipping = false;
+            this.startTimer();
             return;
         }
         if (isAuto && this.option.auto.skip) {
@@ -147,6 +155,7 @@ class Croquis {
                 if (!saveResult) {
                     alert("save failed");
                     this.isSkipping = false;
+                    this.startTimer();
                     return;
                 }
             }

@@ -1,7 +1,7 @@
 {
   "name": "croquis",
   "productName": "croquis",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Croquis",
   "main": "src/main.js",
   "build": {
@@ -17,7 +17,8 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "assets/icons/C_icon.ico"
+      "icon": "assets/icons/C_icon.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
     },
     "mac": {
       "target": "dmg",
