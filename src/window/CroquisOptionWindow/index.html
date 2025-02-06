@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croquis Option</title>
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div>
+        <div class="timer-container">
+            <label for="timer-select">타이머를 선택하세요:</label>
+            <select id="timer-select">
+                <option value="10" selected>10초</option>
+                <option value="20">20초</option>
+                <option value="30">30초</option>
+                <option value="60">1분</option>
+                <option value="120">2분</option>
+                <option value="180">3분</option>
+                <option value="300">5분</option>
+                <option value="600">10분</option>
+                <option value="1800">30분</option>
+                <option value="custom">직접 입력</option>
+            </select>
+            <input type="number" id="custom-timer-input" placeholder="초 단위 입력" style="display: none;" />
+        </div>
+        <br>
+        <div class="autoskip-container" title="정해진 시간이 지나면 자동으로 다음으로 넘어갈지 정해주세요.">
+            <label for="autoskip-checkbox">자동 건너뛰기</label>
+            <input type="checkbox" id="autoskip-checkbox" checked />
+        </div>
+        <ul>
+            <li>
+                <div class="auto-save-container">
+                    <label for="auto-save-checkbox">자동 저장하기</label>
+                    <input type="checkbox" id="auto-save-checkbox" checked />
+                </div>
+            </li>
+            <li>
+                <div class="auto-capture-container">
+                    <label for="auto-capture-checkbox">자동 캡처하기</label>
+                    <input type="checkbox" id="auto-capture-checkbox" checked />
+                </div>
+            </li>
+        </ul>
+        <div class="capture-container" title="저장할 때 결과물을 캡처할지 정해주세요.">
+            <label for="capture-checkbox">캡처하기</label>
+            <input type="checkbox" id="capture-checkbox" checked />
+        </div>
+        <div id="browse-save">
+            경로:
+            <input type="text" id="savePath" readonly>
+            <span>📂</span>
+        </div>
+        <br>
+        <div title="크로키 창의 크기를 정해주세요.">
+            <div>창 크기</div>
+            <div style="margin-left: 20px;">
+                <label for="custom-window-input-width">가로(px): </label>
+                <input type="number" id="custom-window-input-width" value="200" placeholder="px단위 입력" />
+            </div>
+            <div style="margin-left: 20px;">
+                <label for="custom-window-input-height">세로(px): </label>
+                <input type="number" id="custom-window-input-height" value="300" placeholder="px단위 입력" />
+            </div>
+
+        </div>
+        <label title="설정한 옵션이 저장됩니다.">
+            Option Save:
+            <input type="checkbox" name="save-option-checkbox" id="save-option-checkbox" checked>
+        </label>
+
+    </div>
+    <div class="start-btn">크로키 시작</div>
+
+    <script src="renderer.js"></script>
+    <script>
+        const autoskipCheckbox = document.getElementById('autoskip-checkbox');
+        const captureCheckbox = document.getElementById('auto-capture-checkbox');
+        const saveCheckbox = document.getElementById('auto-save-checkbox');
+
+        autoskipCheckbox.addEventListener('change', () => {
+            if (autoskipCheckbox.checked) {
+                captureCheckbox.checked = true;
+                saveCheckbox.checked = true;
+
+                captureCheckbox.disabled = false;
+                saveCheckbox.disabled = false;
+            } else {
+                captureCheckbox.checked = false;
+                saveCheckbox.checked = false;
+
+                captureCheckbox.disabled = true;
+                saveCheckbox.disabled = true;
+            }
+        });
+
+        saveCheckbox.addEventListener('change', () => {
+            if (saveCheckbox.checked) {
+                captureCheckbox.checked = true;
+
+                captureCheckbox.disabled = false;
+            } else {
+                captureCheckbox.checked = false;
+
+                captureCheckbox.disabled = true;
+            }
+        });
+
+        const timerSelect = document.getElementById('timer-select');
+        const customTimerInput = document.getElementById('custom-timer-input');
+
+        timerSelect.addEventListener('change', () => {
+            if (timerSelect.value === 'custom') {
+                customTimerInput.style.display = 'inline';
+            } else {
+                customTimerInput.style.display = 'none';
+                customTimerInput.value = '';
+            }
+        });
+    </script>
+</body>
+
+</html>

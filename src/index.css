@@ -1,0 +1,71 @@
+:root {
+  --default-color: #000000;
+  --default-background-color: #ffffff;
+
+  --scroll-bar-color: #2f3542;
+  --scroll-background-color: #dfe6e9;
+
+  --container-border-color: #bdbdbd;
+  --folder-hover-color: #c9c9c9;
+  --size-change-bar-color: rgba(0, 0, 0, 0.05);
+
+  --content-item-border-color: #dfe6e9;
+
+  --grid-selector-color: #343434;
+  --grid-selector-background-color: #f0f0f0;
+  --grid-selector-hover-color: #e0e0e0;
+  --grid-selector-selected-color: #e0e0e0;
+
+  --start-btn-hover-color: #f0f0f0;
+  --option-open-btn-color: #151515;
+  --option-open-btn-hover-color: #f0f0f0;
+
+  --add-folder-btn-hover-color: #f0f0f0;
+}
+
+body {
+  color: var(--default-color);
+  background-color: var(--default-background-color);
+}
+
+body.dark {
+  --default-color: #b3b3b3;
+  --default-background-color: #121212;
+
+  --scroll-bar-color: #bfbfbf;
+  --scroll-background-color: #2c2c2c;
+
+  --container-border-color: #333333;
+  --folder-hover-color: #e6e6e6;
+  --size-change-bar-color: rgba(255, 255, 255, 0.1);
+
+  --content-item-border-color: #2c2c2c;
+
+  --grid-selector-color: #e0e0e0;
+  --grid-selector-background-color: #1e1e1e;
+  --grid-selector-hover-color: #2e2e2e;
+  --grid-selector-selected-color: #3a3a3a;
+
+  --start-btn-hover-color: #2e2e2e;
+  --option-open-btn-color: #e0e0e0;
+  --option-open-btn-hover-color: #2e2e2e;
+
+  --add-folder-btn-hover-color: #2e2e2e;
+
+  color: var(--default-color);
+  background-color: var(--default-background-color);
+}
+
+.scroll-area::-webkit-scrollbar {
+  width: 3px;
+}
+
+.scroll-area.show-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-bar-color);
+  border-radius: 10px;
+}
+
+/* 
+.scroll-area.show-scrollbar::-webkit-scrollbar-track {
+  
+} */

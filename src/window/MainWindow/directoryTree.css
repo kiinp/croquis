@@ -1,0 +1,62 @@
+#directory-layout {
+    display: flex;
+    height: 100vh;
+}
+
+#directory-info-container {
+    border-right: 2px solid var(--container-border-color);
+    padding: 16px;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-width: 60vw;
+}
+
+#os-directory {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--container-border-color);
+    padding-bottom: 200px;
+}
+#os-directory > ul{
+    margin-left: 30px;
+}
+
+.directory-title-container {
+    display: flex;
+    white-space: nowrap;
+    font-size: 1.0rem;
+    margin-right: 10px;
+    width: 100%;
+}
+
+.directory-title-container:hover {
+    color: var(--folder-hover-color);
+}
+.directory-title{
+    display: block;
+    width: 100%;
+}
+
+.open::before {
+    content: "📂";
+}
+
+.close::before {
+    content: "📁";
+}
+
+.sub-directory {
+    list-style: none;
+}
+
+.directory-container>ul {
+    margin: 10;
+    padding: 0;
+}
+
+
+
+.hidden {
+    display: none;
+}

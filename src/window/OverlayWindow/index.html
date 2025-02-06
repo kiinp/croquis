@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Overlay</title>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.2);
+                cursor: crosshair;
+                user-select: none;
+                overflow: hidden;
+            }
+            #selectionBox {
+                position: absolute;
+                border: 2px solid #fff;
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="selectionBox"></div>
+        <script src="renderer.js"></script>
+    </body>
+</html>

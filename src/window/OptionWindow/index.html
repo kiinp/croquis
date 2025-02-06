@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Option Settings</title>
+  <link rel="stylesheet" href="../../index.css">
+  <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+  <h1>Option Settings</h1>
+  <form id="optionForm">
+    <div id="browseRoot">
+      경로: 
+      <input type="text" id="rootDirectory" readonly required>
+      <span >📂</span>
+    </div>
+    <!-- <label>
+      Language:
+      <select id="language">
+        <option value="ko">한국어</option>
+        <option value="en">영어</option>
+      </select>
+    </label> -->
+    <label>
+      Theme:
+      <select id="theme">
+        <option value="dark">Dark</option>
+        <option value="white">White</option>
+      </select>
+    </label>
+    <!-- <label>
+      Screen Scale (20 ~ 500):
+      <input type="number" id="screenScale" min="20" max="500" value="100">
+    </label> -->
+    <br>
+    <button type="submit">Save Options</button>
+  </form>
+  <script src="renderer.js"></script>
+</body>
+</html>

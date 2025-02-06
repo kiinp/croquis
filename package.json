@@ -1,0 +1,84 @@
+{
+  "name": "croquis",
+  "productName": "croquis",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": "src/main.js",
+  "build": {
+    "appId": "com.kinnp.croquis",
+    "productName": "croquis",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "src/**/*",
+      "db/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icons/C_icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icons/C_icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icons/C_icon.png"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "kiinp",
+      "repo": "croquis"
+    }
+  },
+  "scripts": {
+    "init-db": "node db/init.js",
+    "start": "electronmon .",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\"",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "postinstall": "electron-builder install-app-deps",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.6.1",
+    "@electron-forge/maker-deb": "^7.6.1",
+    "@electron-forge/maker-rpm": "^7.6.1",
+    "@electron-forge/maker-squirrel": "^7.6.1",
+    "@electron-forge/maker-zip": "^7.6.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.6.1",
+    "@electron-forge/plugin-fuses": "^7.6.1",
+    "@electron/fuses": "^1.8.0",
+    "electron": "^34.0.1",
+    "electron-rebuild": "^3.2.9",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electronmon": "^2.0.3"
+  },
+  "keywords": [],
+  "author": "tgim",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "electron-squirrel-startup": "^1.0.1",
+    "electron-updater": "^6.3.9",
+    "file-type": "^16.5.4",
+    "jsdoc": "^4.0.4",
+    "sqlite3": "^5.1.7",
+    "typescript": "^5.7.3"
+  },
+  "devDependecies": {
+    "electron-builder": "^25.1.8"
+  },
+  "electronmon": {
+    "watch": [
+      "src"
+    ],
+    "patterns": [
+      "!db/**"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+#history-detail-container {
+    display: flex;
+    overflow-y: auto;
+}
+
+#history-detail-container .detail-content {
+    max-width: 70vh;
+}
+
+#history-detail-container .compare-container {
+    display: flex;
+}
+
+.compare-item {
+    flex: 1;
+    overflow: hidden;
+}
+
+#history-detail-container .compare-item img {
+    width: 100%;
+    aspect-ratio: 1 / 1.414;
+    object-fit: contain;
+}
+#history-detail-container .compare-item .info div {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+}
+#history-detail-container .compare-item .info .name, .path {
+    margin-left: 5px;
+    width: 70%;
+    font-size: 0.6rem;
+    height: fit-content;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

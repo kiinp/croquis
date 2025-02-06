@@ -1,0 +1,90 @@
+.history-container {
+    margin: 20px;
+    margin-left: 0px;
+}
+
+.history-option-container {
+    margin-bottom: 10px;
+}
+
+.os-option-container {
+    margin: 20px;
+    margin-left: 0px;
+}
+
+.start-btn {
+    position: absolute;
+    right: 50px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.start-btn:hover {
+    cursor: pointer;
+    background-color: var(--start-btn-hover-color);
+}
+
+#global-option-container {
+    display: flex;
+    margin: 20px;
+    margin-left: 0px;
+}
+
+.grid-selector {
+    margin-left: 20px;
+    display: flex;
+    height: 20px;
+    color: var(--grid-selector-color);
+    background-color: var(--grid-selector-background-color);
+    padding: 1px;
+    border-radius: 3px;
+}
+
+.grid-option svg {
+    padding: 2px;
+    height: calc(100% - 4px);
+    aspect-ratio: 1 / 1;
+    margin-right: 5px;
+}
+.masonry-option svg {
+    padding: 2px;
+    height: calc(100% - 4px);
+    aspect-ratio: 1 / 1;
+}
+
+.grid-option:hover svg {
+    background-color: var(--grid-selector-hover-color);
+}
+.masonry-option:hover svg {
+    background-color: var(--grid-selector-hover-color);
+}
+
+.grid-option.selected svg {
+    background-color: var(--grid-selector-selected-color);
+}
+.masonry-option.selected svg {
+    background-color: var(--grid-selector-selected-color);
+}
+
+.add-folder-btn > svg{
+    height: 100%;
+}
+
+.add-folder-btn {
+    display: flex;
+    justify-content: center; 
+    margin-right: 10px;
+    height: 20px;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+.add-folder-btn > span {
+    margin-right: 3px;
+}
+
+
+.add-folder-btn:hover {
+    cursor: pointer;
+    background-color: var(--add-folder-btn-hover-color);
+}
+

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    
+    <div class="ui-container">
+        <div id="custom-frame">
+            <div class="btn-container">
+                <button id="minimize-btn">_</button>
+                <button id="close-btn">X</button>
+            </div>
+        </div>
+        <div class="footer-btn-container">
+            <div class="stop-btn-container">
+                <div class="start-btn">
+                    <div class="btn-back"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+                        <polygon points="5,3 19,12 5,21" />
+                    </svg>
+                </div>
+                <div class="stop-btn show">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+                        <rect x="6" y="4" width="4" height="16" />
+                        <rect x="14" y="4" width="4" height="16" />
+                    </svg>
+                </div>
+            </div>
+            <div class="save-btn-container">
+                <div class="save-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="currentColor">
+                        <path d="M17 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zM12 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm2-10H6V5h8v4z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="prev-btn">
+                <div class="btn-back"></div>
+                <div class="arrow left"></div>
+            </div>
+            <div class="next-btn">
+                <div class="btn-back"></div>
+                <div class="arrow right"></div>
+            </div>
+        </div>
+    </div>
+    <div class="main-container">
+        <div>
+            <span class="timer">0m 0s / 0m 0s</span>
+        </div>
+        <div>
+            <img class="current-image" src="" alt="">
+        </div>
+    </div>
+
+    <script src="renderer.js" type="module"></script>
+    <script>
+        // // const uiContainer = document.querySelector('.ui-container');
+        // const customFrame = document.getElementById('custom-frame');
+        // document.body.addEventListener('mouseenter', () => {
+        //    console.log('i')
+        //     customFrame.style.webkitAppRegion = "drag";
+        // });
+        // document.body.addEventListener('mouseleave', (event) => {
+        //    console.log(`${event.clientX}, Y: ${event.clientY}`)
+           
+        // });
+        // // customFrame.addEventListener('mouseup', () => {
+        // //     console.log("sdfsdfdsf")
+        // //     customFrame.style.webkitAppRegion = "drag";
+        // //     uiContainer.style.opacity = '1';
+        // // });
+    </script>
+</body>
+
+</html>

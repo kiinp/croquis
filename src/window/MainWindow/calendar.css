@@ -1,0 +1,76 @@
+.first-box {
+    background-color: #9be9a8;
+}
+
+.second-box {
+    background-color: #40c463;
+}
+
+.third-box {
+    background-color: #30a14e;
+}
+
+.fourth-box {
+    background-color: #216e39;
+}
+
+.max-box {
+    background-color: #0a431c;
+}
+
+
+
+#calendar .calendar-container {
+    width: 100%;
+    display: flex;
+}
+
+#calendar .weeks-container {
+    display: flex;
+}
+
+#calendar .grid-wrapper {
+    /* display: flex; */
+    width: 100%;
+    overflow-x: auto;
+}
+
+#calendar .day-labels {
+    margin-right: 10px;
+    margin-top: 22px
+}
+
+#calendar .day-label {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+#calendar .month-labels {
+    display: flex;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+#calendar .week-container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 2px;
+}
+
+#calendar .week-container .box {
+    width: 12px;
+    height: 12px;
+    margin-bottom: 2px;
+}
+
+#calendar .week-container .box:not(.no-box) {
+    cursor: pointer;
+}
+
+#calendar .week-container .no-box {
+    opacity: 0;
+}
+
+#calendar .week-container .zero-box {
+    background-color: #ddd;
+}
