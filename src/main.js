@@ -4,6 +4,7 @@ const fs = require("fs").promises;
 const { autoUpdater } = require('electron-updater');
 const { init_db } = require('../db/init');
 const ipcHandlers = require("./ipcHandlers/index");
+const log = require('electron-log');
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -52,7 +53,12 @@ app.whenReady().then(async () => {
   autoUpdater.checkForUpdates();
 });
 
+autoUpdater.on('checking-for-update', () => {
+  log.info('Checking for update...');
+});
+
 autoUpdater.on('update-available', (info) => {
+  log.info('Update exists...');
   const result = dialog.showMessageBoxSync({
     type: 'info',
     title: '업데이트 확인',
