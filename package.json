@@ -2,7 +2,7 @@
   "name": "croquis",
   "productName": "croquis",
   "version": "1.0.2",
-  "description": "My Electron application description",
+  "description": "Croquis",
   "main": "src/main.js",
   "build": {
     "appId": "com.kinnp.croquis",
