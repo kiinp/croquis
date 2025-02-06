@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, dialog } = require('electron');
 const windowManager = require('./modules/windowManager');
 const fs = require("fs").promises;
 const { autoUpdater } = require('electron-updater');
@@ -78,25 +78,4 @@ autoUpdater.on('update-downloaded', (info) => {
   if (result === 0) { // If restart is confirmed, quit and install the update
     autoUpdater.quitAndInstall();
   }
-});
-
-function checkInternet(callback) {
-  dns.lookup('google.com', (err) => {
-    callback(!err); // true if connected, false otherwise
-  });
-}
-
-
-ipcMain.on('check-for-updates', (event, arg) => {
-  checkInternet((isConnected) => {
-    if (isConnected) {
-      autoUpdater.checkForUpdates();
-    } else {
-      dialog.showMessageBox({
-        type: 'error',
-        title: '네트워크 오류',
-        message: '네트워크에 연결되어 있지 않아 업데이트를 확인할 수 없습니다.'
-      });
-    }
-  });
 });
