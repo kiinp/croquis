@@ -63,6 +63,12 @@ function initOptionEl(option) {
     windowWidthEl.value = option.window?.width || "200";
     windowHeightEl.value = option.window?.height || "300";
     timerSelect.value = option.timer?.maxTime.toString() || "10";
+    if(!timerSelect.value){
+        timerSelect.value = "custom";
+        customTimerInput.style.display = 'inline';
+    } else {
+        customTimerInput.style.display = 'none';
+    }
     customTimerInput.value = option.timer?.maxTime.toString() || "10";
 
     // Add event listener to the browse button for selecting a folder

@@ -24,7 +24,7 @@ ipcMain.on('send-selected-photos', (event, imageList) => {
 
 ipcMain.on('send-croquis-data-to-main', (event, data) => {
     let croquisOptionWindow = windowManager.getCroquisOptionWindow();
-    croquisOptionWindow.hide();
+    croquisOptionWindow.close();
     // Retrieve the current Croquis window reference.
     let croquisWindow = windowManager.getCroquisWindow();
 
