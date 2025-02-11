@@ -1,5 +1,6 @@
-const { dialog, ipcMain, app } = require('electron');
+const { dialog, ipcMain, app, clipboard, nativeImage} = require('electron');
 const { autoUpdater } = require('electron-updater');
+const fs = require("fs");
 const dns = require('dns');
 
 const optionHandler = require('./optionHandlers');
@@ -9,6 +10,23 @@ const dbHandler = require('./dbHandlers');
 const captureHandler = require('./captureHandlers');
 const windowHandler = require('./windowHandlers');
 const croquisHandler = require('./croquisHandlers');
+
+ipcMain.handle("copy-image-to-clipboard", (event, filePath) => {
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      console.error("Error reading the image file:", err);
+      return;
+    }
+    const image = nativeImage.createFromBuffer(data); 
+    if (image.isEmpty()) {
+      console.error(
+        "nativeImage is empty. The image might not be loaded correctly."
+      );
+      return;
+    }
+    clipboard.writeImage(image); 
+  });
+});
 
 
 function checkInternet(callback) {
