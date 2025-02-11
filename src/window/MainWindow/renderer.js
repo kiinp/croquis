@@ -48,6 +48,12 @@ async function initDirectoryInfo() {
 
 
 function bindGlobalEvents() {
+  window.addEventListener("paste", (e)=>{
+    if(mainDirectory instanceof OsDirectoryWindow) {
+      mainDirectory.handlePasteEvent(e);
+    }
+  })
+
   resizeBar.bindGlobalEvents();
   const directoryLayout = document.querySelector("div#directory-layout");
   directoryLayout.append(resizeBar.createSizeChangeBar(document.querySelector("div#directory-info-container")));
@@ -418,7 +424,7 @@ class OsDirectoryWindow extends DirectoryWindow {
    * @param {Event} e
    * @returns 
    */
-  handleDropEvent(e) {
+  async handleDropEvent(e) {
     this.onLoading();
 
     const htmlData = e.dataTransfer.getData('text/html');
@@ -433,6 +439,7 @@ class OsDirectoryWindow extends DirectoryWindow {
     }
 
     if (url) {
+      console.log(url);
       window.api.send('handle-file-drop', {
         type: 'url',
         data: url,
@@ -448,7 +455,7 @@ class OsDirectoryWindow extends DirectoryWindow {
     for (let i = 0; i < items.length; i++) {
       const item = items[i].getAsFile();
       if (item) {
-        const filePath = window.api.showFilePath(item);
+        const filePath = await window.api.showFilePath(item);
         window.api.send('handle-file-drop', {
           type: 'local',
           data: filePath,
@@ -457,6 +464,36 @@ class OsDirectoryWindow extends DirectoryWindow {
       }
     }
     this.offLoading();
+  }
+  /**
+   * @param {Event} e
+   */
+  handlePasteEvent(e) {
+    /** @type {DataTransferItemList} */
+    const items = e.clipboardData?.items;
+    if(!items){
+      return;
+    }
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      console.log(item);
+      if (item.type.indexOf('image') !== -1) {
+        const blob = item.getAsFile();
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const imageDataUrl = e.target.result;
+          window.api.send('handle-file-drop', {
+            type: 'url',
+            data: imageDataUrl,
+            targetPath: this.dirpath,
+          });
+        };
+        reader.readAsDataURL(blob);
+      }
+      continue;
+    }
+    
   }
   /** @todo ui class로 빼기 */
   renderDirectoryContent() {

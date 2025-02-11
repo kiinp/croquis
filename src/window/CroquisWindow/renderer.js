@@ -32,7 +32,7 @@ class Croquis {
         this.isSkipping = false;
         this.historyIdList = [];
         this.timerRequestId = null;
-        this.folderId=1;
+        this.folderId = 1;
         this.isAutoSkipped = false;
 
         this.applyOption();
@@ -105,7 +105,7 @@ class Croquis {
         return this.elapsedTime / 1000;
     }
 
-    
+
 
     /**
      * return current image path from currentIndex
@@ -135,10 +135,10 @@ class Croquis {
         if (this.isSkipping) {
             return;
         }
-        if (isAuto && this.isAutoSkipped){
+        if (isAuto && this.isAutoSkipped) {
             return;
         }
-        if(isAuto){
+        if (isAuto) {
             this.isAutoSkipped = true;
         }
         this.isSkipping = true;
@@ -184,14 +184,14 @@ class Croquis {
             if (!historyId) {
                 throw new Error("fail to save history");
             }
-            
+
             if (isAuto && !this.option.auto.capture) {
                 return true;
             }
 
             if (this.option.capture || this.option.auto.capture) {
                 const now = Date.now();
-                window.api.send("start-selection", {windowId: now, savePath: this.option.savePath});
+                window.api.send("start-selection", { windowId: now, savePath: this.option.savePath });
 
                 const capturePromise = new Promise((resolve, reject) => {
                     window.api.once("capture-completed", (result) => {
@@ -242,7 +242,7 @@ class Croquis {
         return historyId;
     }
     saveImageToHistoryId(imagePath, historyId) {
-        window.api.saveImage(historyId, imagePath );
+        window.api.saveImage(historyId, imagePath);
     }
 }
 
@@ -275,6 +275,43 @@ class CroquisUI {
             if (this.croquis.alreadySave) return;
             this.croquis.save(false);
         });
+
+        this.imageEl.setAttribute('draggable', 'true');
+        this.imageEl.addEventListener('dragstart', (event) => {
+            // src가 file:// 로 시작하는 로컬 파일일 경우
+            if (img.src.startsWith('file://')) {
+              // 이미지가 완전히 로드된 상태여야 합니다.
+              if (!img.complete) {
+                console.warn('이미지가 아직 로드되지 않았습니다.');
+                return;
+              }
+        
+              // Canvas를 이용하여 이미지를 data URL로 변환
+              const canvas = document.createElement('canvas');
+              canvas.width = img.naturalWidth;
+              canvas.height = img.naturalHeight;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0);
+        
+              // 파일 확장자에 따라 MIME 타입 결정 (기본은 png)
+              let mimeType = 'image/png';
+              if (/\.(jpe?g)$/i.test(img.src)) {
+                mimeType = 'image/jpeg';
+              }
+        
+              // Canvas에서 data URL 생성
+              const dataURL = canvas.toDataURL(mimeType);
+        
+              // file:// URL에서 파일명 추출 (URL 객체를 사용)
+              const urlObj = new URL(img.src);
+              const fileName = decodeURIComponent(urlObj.pathname.split('/').pop());
+        
+              // Electron의 DownloadURL 형식: "MIME타입:파일명:dataURL"
+              const downloadURL = `${mimeType}:${fileName}:${dataURL}`;
+        
+              event.dataTransfer.setData('DownloadURL', downloadURL);
+            }
+          });
     }
     /**
      * 

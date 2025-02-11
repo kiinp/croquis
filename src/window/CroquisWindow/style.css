@@ -1,6 +1,5 @@
 body {
     user-select: none;
-    -webkit-user-drag: none;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -14,10 +13,10 @@ body::-webkit-scrollbar {
 
 
 #custom-frame {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     z-index: 9999;
     height: 40px;
     background: rgba(0, 0, 0, 0.8);
@@ -64,7 +63,7 @@ img.current-image {
     border: 1px solid black;
     box-sizing: border-box;
     object-fit: contain;
-    pointer-events: none;
+    /* pointer-events: none; */
 }
 
 .prev-btn,
@@ -176,14 +175,15 @@ img.current-image {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    /* width: 100%;
     height: 100%;
-    z-index: 1000;
+    z-index: 1000; */
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-.ui-container:hover {
+#croquis-container:hover .ui-container {
+    /* display: none; */
     opacity: 1;
 }
 
