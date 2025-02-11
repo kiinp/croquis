@@ -1,6 +1,9 @@
 const { contextBridge, ipcRenderer, webUtils } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
+    copyImageFromFilePath: (filePath) => {
+        return ipcRenderer.invoke('copy-image-to-clipboard', filePath);
+    },
     getWindowSize: async () => {
         return await ipcRenderer.invoke('get-window-size');
     },
