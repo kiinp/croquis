@@ -24,7 +24,7 @@ function createMainWindow() {
     icon: path.join(__dirname, "..", "..", 'assets/icons/C_icon.png')
   });
   mainWindow.loadFile(path.join(__dirname, "..", "window", 'MainWindow', 'index.html'));
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   return mainWindow;
 }
 

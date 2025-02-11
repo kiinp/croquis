@@ -276,42 +276,11 @@ class CroquisUI {
             this.croquis.save(false);
         });
 
-        this.imageEl.setAttribute('draggable', 'true');
-        this.imageEl.addEventListener('dragstart', (event) => {
-            // src가 file:// 로 시작하는 로컬 파일일 경우
-            if (img.src.startsWith('file://')) {
-              // 이미지가 완전히 로드된 상태여야 합니다.
-              if (!img.complete) {
-                console.warn('이미지가 아직 로드되지 않았습니다.');
-                return;
-              }
-        
-              // Canvas를 이용하여 이미지를 data URL로 변환
-              const canvas = document.createElement('canvas');
-              canvas.width = img.naturalWidth;
-              canvas.height = img.naturalHeight;
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(img, 0, 0);
-        
-              // 파일 확장자에 따라 MIME 타입 결정 (기본은 png)
-              let mimeType = 'image/png';
-              if (/\.(jpe?g)$/i.test(img.src)) {
-                mimeType = 'image/jpeg';
-              }
-        
-              // Canvas에서 data URL 생성
-              const dataURL = canvas.toDataURL(mimeType);
-        
-              // file:// URL에서 파일명 추출 (URL 객체를 사용)
-              const urlObj = new URL(img.src);
-              const fileName = decodeURIComponent(urlObj.pathname.split('/').pop());
-        
-              // Electron의 DownloadURL 형식: "MIME타입:파일명:dataURL"
-              const downloadURL = `${mimeType}:${fileName}:${dataURL}`;
-        
-              event.dataTransfer.setData('DownloadURL', downloadURL);
+        document.addEventListener("keydown", (event) => {
+            if (event.ctrlKey && event.key === "c") {
+                window.api.copyImageFromFilePath(this.croquis.getCurrentImagePath());
             }
-          });
+        });
     }
     /**
      * 
