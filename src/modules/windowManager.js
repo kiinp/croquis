@@ -5,6 +5,7 @@ const path = require('path');
 let croquisWindow = null;
 let overlayWindow = null;
 let croquisOptionWindow = null;
+let folderWindow = null;
 let optionWindow = null;
 let mainWindow = null;
 /**
@@ -115,6 +116,29 @@ function createCroquisOptionWindow() {
   croquisOptionWindow.loadURL(path.join(__dirname, "..", "window", 'CroquisOptionWindow', 'index.html'));
   return croquisOptionWindow;
 }
+
+/**
+ * 
+ * @returns {BrowserWindow}
+ */
+function createFolderWindow() {
+  const {scaleFactor} = screen.getPrimaryDisplay();
+
+  folderWindow = new BrowserWindow({
+    width: Math.round(200 * scaleFactor),
+    height: Math.round(250 * scaleFactor),
+    center: true,
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, "..", 'preload.js'),
+    },
+    icon: path.join(__dirname, "..", "..", 'assets/icons/C_icon.png')
+  });
+  folderWindow.loadURL(path.join(__dirname, "..", "window", 'FolderWindow', 'index.html'));
+  // folderWindow.webContents.openDevTools();
+  return folderWindow;
+}
 /**
  * 
  * @returns {BrowserWindow}
@@ -171,15 +195,26 @@ function getOptionWindow() {
 function getMainWindow() {
   return mainWindow;
 }
+
+/**
+ * 
+ * @returns {BrowserWindow}
+ */
+function getFolderWindow() {
+  return folderWindow;
+}
+
 module.exports = {
   createMainWindow,
   createCroquisWindow,
   createOverlayWindow,
   createCroquisOptionWindow,
   createOptionWindow,
+  createFolderWindow,
   getCroquisWindow,
   getOverlayWindow,
   getCroquisOptionWindow,
   getOptionWindow,
-  getMainWindow
+  getMainWindow,
+  getFolderWindow
 };

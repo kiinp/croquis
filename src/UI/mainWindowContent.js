@@ -4,6 +4,7 @@ class MainWindowContent {
       this.selectedList = [];
       this.subContainer = null;
       this.selectAllInput = document.querySelector("#select-all-input");
+      this.selectableInput = document.querySelector("#selectable-toggle");
       MainWindowContent.instance = this;
     }
     return MainWindowContent.instance;
@@ -21,10 +22,13 @@ class MainWindowContent {
 
     folderContainer.className = "content-folder-container";
     subContainer.className = "subcontent-container scroll-area show-scrollbar";
+    if (this.SelectAble()) {
+      subContainer.classList.add("selectable");
+    }
     contentContainer.className = "content-container";
     const countElement = document.querySelector(".count");
     if (countElement) {
-      countElement.innerHTML = `총: ${contentList.length}`;
+      countElement.innerHTML = `총: ${contentList.filter(item=>item.type == "history").length}`;
     }
 
     contentList.forEach((item, index) => {
@@ -33,8 +37,8 @@ class MainWindowContent {
         case "directory":
           itemDiv.className = "content-item folder";
           itemDiv.innerHTML = `<span>${item.dirname}</span>`;
-      folderContainer.append(itemDiv);
-      break;
+          folderContainer.append(itemDiv);
+          break;
         case "file":
           itemDiv.className = "content-item file";
           const newOrder = this.getNewOrder();
@@ -51,47 +55,60 @@ class MainWindowContent {
             filePath: item.filePath,
             order: newOrder,
           });
-          const checkbox = itemDiv.querySelector("input");
-          checkbox.addEventListener("change", (e) => this.toggleSelection(e.target));
-      contentContainer.append(itemDiv);
-      break;
+          itemDiv.querySelector("input").addEventListener("change", (e) => this.toggleSelection(e.target));
+          contentContainer.append(itemDiv);
+          break;
         case "history":
           itemDiv.className = "content-item history";
           itemDiv.innerHTML = `
-            <input style="display:none" type="checkbox" checked id="content-item${index}"/>
+            <input type="checkbox" id="content-item${index}" data-image-path="${item.imagePath}"/>
             <label for="content-item${index}">
               <img src="${item.imagePath}" alt="${item.imageName}" class="image-preview" />
             </label>
           `;
-      contentContainer.append(itemDiv);
-      break;
+          contentContainer.append(itemDiv);
+          itemDiv.querySelector("input").addEventListener("change", (e) => this.toggleSelection(e.target));
+          contentContainer.append(itemDiv);
+          break;
         default:
           break;
       }
+
       /** @todo double call error fix */
       itemDiv.addEventListener("click", item.clickFunc);
     });
     subContainer.append(folderContainer);
     subContainer.append(contentContainer);
     this.subContainer = subContainer;
-
-    this.selectAllInput.checked = true;
     return subContainer;
   }
-
+  SelectAble() {
+    if (!this.selectableInput) {
+      return false;
+    }
+    return this.selectableInput?.checked;
+  }
+  toggleSelectAble() {
+    if (this.subContainer) {
+      this.subContainer.classList.remove("selectable");
+      if (this.SelectAble())
+        this.subContainer.classList.add("selectable");
+    }
+  }
   /**
    * Toggle the selection state of a file checkbox.
    * @param {HTMLInputElement} checkbox - The checkbox element.
    */
   toggleSelection = (checkbox) => {
     const filePath = checkbox.dataset.filePath;
+    const imagePath = checkbox.dataset.imagePath;
     if (checkbox.checked) {
       const newOrder = this.getNewOrder();
       checkbox.dataset.selectedOrder = newOrder;
-      this.addSelectedItem({ filePath, order: newOrder });
+      this.addSelectedItem({ imagePath, filePath, order: newOrder });
     } else {
       const order = Number(checkbox.dataset.selectedOrder);
-      this.removeSelectedItem({ filePath, order });
+      this.removeSelectedItem({ imagePath, filePath, order });
       delete checkbox.dataset.selectedOrder;
     }
     this.updateOrderDisplay();
@@ -103,7 +120,7 @@ class MainWindowContent {
   addSelectedItem(item) {
     this.selectedList.push(item);
 
-    if(document.querySelectorAll(".select-item-container input:checked").length === document.querySelectorAll(".select-item-container input").length){
+    if (document.querySelectorAll(".select-item-container input:checked").length === document.querySelectorAll(".select-item-container input").length) {
       this.selectAllInput.checked = true;
     }
   }
@@ -115,7 +132,7 @@ class MainWindowContent {
     const removedOrder = Number(item.order);
 
     // Remove the item from selectedList.
-    this.selectedList = this.selectedList.filter((el) => el.filePath !== item.filePath);
+    this.selectedList = this.selectedList.filter((el) => (el.filePath !== item.filePath || el.imagePath !== item.imagePath));
 
     // Get all checked file inputs and sort them by their order.
     const checkedInputs = Array.from(
@@ -144,6 +161,7 @@ class MainWindowContent {
    */
   initSelectedList() {
     this.selectedList = [];
+    this.selectAllInput.checked = false;
   }
 
   /**
@@ -152,6 +170,7 @@ class MainWindowContent {
   updateOrderDisplay() {
     document.querySelectorAll(".content-item input").forEach((checkbox) => {
       const orderSpan = checkbox.closest(".content-item").querySelector(".order");
+      if(!orderSpan) return;
       if (checkbox.dataset.selectedOrder !== undefined) {
         orderSpan.textContent = `${checkbox.dataset.selectedOrder}`;
       } else {
@@ -169,10 +188,10 @@ class MainWindowContent {
   }
   /**
    * Retrieve the list of selected file paths.
-   * @returns {string[]} Array of file paths.
+   * @returns {import("../type").ContentItem[]} Array of file paths.
    */
   getSelectedList() {
-    return this.selectedList.map((item) => item.filePath);
+    return this.selectedList;
   }
 
   /**
@@ -181,7 +200,7 @@ class MainWindowContent {
   resetSelectedList() {
     this.selectedList = [];
     if (this.subContainer) {
-      this.subContainer.querySelectorAll("div.content-item.file input:checked").forEach((checkbox) => {
+      this.subContainer.querySelectorAll("div.content-item input:checked").forEach((checkbox) => {
         checkbox.checked = false;
         this.toggleSelection(checkbox);
       });
@@ -195,7 +214,7 @@ class MainWindowContent {
   chooseAllItem() {
     this.resetSelectedList();
     if (this.subContainer) {
-      this.subContainer.querySelectorAll("div.content-item.file input").forEach((checkbox) => {
+      this.subContainer.querySelectorAll("div.content-item input").forEach((checkbox) => {
         checkbox.checked = true;
         this.toggleSelection(checkbox);
       });

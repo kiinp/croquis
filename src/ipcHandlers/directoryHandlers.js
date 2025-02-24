@@ -1,6 +1,7 @@
 const { ipcMain } = require('electron');
 const fileUtils = require('../modules/fileUtils');
 const { loadHistoryList } = require("../../db/history");
+const { getFolderList } = require("../../db/folder");
 const path = require('path');
 const fs = require('fs');
 
@@ -31,20 +32,16 @@ ipcMain.handle('get-all-directory-info', async (event, dirPath) => {
 ipcMain.handle('get-history-contents', async (event, folderId = null) => {
   try {
     let result = loadHistoryList(folderId);
+    let folderList = getFolderList().map(item => {return {...item, isDirectory: true}});
     if (!result) {
       result = [];
     }
-    return { success: true, data: result };
+    return { success: true, data: [...result, ...folderList] };
   } catch (error) {
     console.log('Error fetching history contents:', error);
     return { success: false, msg: "Error fetching history contents." };
   }
 });
-
-function isValidFolderName(name) {
-  const forbiddenRegex = /[\\\/:\*\?"<>\|]/;
-  return !forbiddenRegex.test(name);
-}
 
 ipcMain.handle('add-folder', async (event, args) => {
   const { folderName, basePath } = args;
@@ -53,9 +50,8 @@ ipcMain.handle('add-folder', async (event, args) => {
     return { success: false, msg: 'Please enter a folder name.', data: null };
     return;
   }
-  if (!isValidFolderName(folderName)) {
+  if (!fileUtils.isValidFolderName(folderName)) {
     return { success: false, msg: 'Some characters are not allowed.', data: null };
-
   }
   const targetBasePath = basePath || __dirname;
   const newFolderPath = path.join(targetBasePath, folderName);

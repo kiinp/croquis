@@ -1,8 +1,17 @@
 const { contextBridge, ipcRenderer, webUtils } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
-    copyImageFromFilePath: (filePath) => {
-        return ipcRenderer.invoke('copy-image-to-clipboard', filePath);
+    createHistoryFolder: async (folderName) => {
+        return await ipcRenderer.invoke('create-history-folder', folderName);
+    },
+    getFolderList: async () => {
+        return await ipcRenderer.invoke('get-folder-list');
+    },
+    moveFolder: async (data) => {
+        return await ipcRenderer.invoke('move-folder', data);
+    },
+    copyImageFromFilePath: async (filePath) => {
+        return await ipcRenderer.invoke('copy-image-to-clipboard', filePath);
     },
     getWindowSize: async () => {
         return await ipcRenderer.invoke('get-window-size');

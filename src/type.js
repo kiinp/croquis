@@ -123,6 +123,7 @@
  * @property {number} timer.maxTime
  * @property {boolean} capture capture when save
  * @property {string} savePath
+ * @property {string} saveFolder
  */
 
 //#endregion

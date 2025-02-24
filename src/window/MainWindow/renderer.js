@@ -64,10 +64,14 @@ function bindGlobalEvents() {
   const optionBtn = document.querySelector("div.option-open-btn");
 
   const addFolderBtn = document.querySelector("div.add-folder-btn");
+  const moveFolderBtn = document.querySelector("div.move-folder-btn");
+  
   const folderNameInput = document.querySelector("input#folder-name-input");
   const addFolderSubmitBtn = document.querySelector("button#submit-folder-btn");
 
   const selectAllInput = document.querySelector("input#select-all-input");
+  const selectableInput = document.querySelector("input#selectable-toggle");
+
 
   if (selectAllInput) {
     selectAllInput.addEventListener("change", () => {
@@ -76,6 +80,11 @@ function bindGlobalEvents() {
       } else {
         mainWindowContent.resetSelectedList();
       }
+    });
+  }
+  if (selectableInput) {
+    selectableInput.addEventListener("change", () => {
+      mainWindowContent.toggleSelectAble();
     });
   }
 
@@ -88,6 +97,17 @@ function bindGlobalEvents() {
       if (folderNameInput) {
         folderNameInput.value = "";
         folderNameInput.focus();
+      }
+    });
+  }
+  
+  if (moveFolderBtn) {
+    moveFolderBtn.addEventListener("click", async () => {
+      if(!mainDirectory){
+        return;
+      }
+      if(mainDirectory instanceof HistoryDirectoryWindow){
+        mainDirectory.moveFolder();
       }
     });
   }
@@ -132,7 +152,7 @@ function bindGlobalEvents() {
     historyRoot.addEventListener("click", () => {
       openDirectory({
         dirname: "history",
-        dirpath: "1",
+        dirpath: "",
       }, false);
     });
   }
@@ -277,12 +297,11 @@ class DirectoryWindow {
     }
     return newList;
   }
-
-  setSelectedList() {
-    this.selectedList = mainWindowContent.getSelectedList();
+  setCroquisSelectedList() {
+    this.selectedList = mainWindowContent.getSelectedList().map(item => item.filePath);
   }
   startCroquis() {
-    this.setSelectedList();
+    this.setCroquisSelectedList();
     if (this.selectedList.length == 0) {
       this.handleError("select one or more file")
       return;
@@ -565,8 +584,7 @@ class HistoryDirectoryWindow extends DirectoryWindow {
     const calendarOption = options.map((option) => option.key !== "dateFilter"); //calendar optoin don't contain date filter option.
 
     const filteredContentList = this.applyOption(this.contentList, options);
-    const calendarContentList = this.applyOption(this.contentList, calendarOption).map((content) => content.history);
-
+    const calendarContentList = this.applyOption(this.contentList, calendarOption).filter((content)=>content.type == "history").map((content) => content.history);
     this.renderCalendar(calendarContentList, document.getElementById("history-date-input")?.value || undefined);
     this.renderDirectoryContentBase(filteredContentList);
   }
@@ -597,17 +615,35 @@ class HistoryDirectoryWindow extends DirectoryWindow {
    */
   convertHistoryList(historyList) {
     const handleClickFun = (history) => {
+      if(mainWindowContent.SelectAble()){
+        return;
+      }
       this.showDetailAreaFromHistory(history);
     };
     this.contentList = historyList.map((history) => {
       /** @type {import("../../type.js").ContentItem} */
+      console.log(history)
       const tempContent = {
-        type: "history",
-        history,
-        imageName: history.imageName,
-        imagePath: history.imagePath,
-        date: history.date,
-        clickFunc: () => handleClickFun(history),
+        type: history.isDirectory ? "directory" : "history",
+      }
+      switch (tempContent.type) {
+        case "directory":
+          tempContent.dirname = history.folderName;
+          tempContent.dirpath = history.id;
+          tempContent.clickFunc = () => {
+            openDirectory({
+              dirname: tempContent.dirname,
+              dirpath: tempContent.dirpath
+            }, false);
+          }
+          break;
+        case "history":
+          tempContent.history = history,
+          tempContent.imageName =  history.imageName,
+          tempContent.imagePath =  history.imagePath,
+          tempContent.date = history.date;
+          tempContent.clickFunc = ()=>handleClickFun(history);
+          break;
       }
       return tempContent;
     })
@@ -690,6 +726,19 @@ class HistoryDirectoryWindow extends DirectoryWindow {
       const element = calendar.createCalendar(items, handleBlockClick);
       calendarContainer.append(element);
     }
+  }
+
+  setHistorySelectedList() {
+    this.selectedList = mainWindowContent.getSelectedList().map(item => item.imagePath);
+  }
+
+  moveFolder() {
+    this.setHistorySelectedList();
+    if(this.selectedList.length == 0){
+      this.handleError("select at leat one history");
+      return;
+    }
+    window.api.send("move-folder", this.selectedList);
   }
 }
 

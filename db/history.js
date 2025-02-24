@@ -94,7 +94,7 @@ const loadHistoryList = (folderId = null) => {
     const params = [];
 
     // only one history
-    if (folderId !== null) {
+    if (folderId !== "" && folderId !== null) {
         query += " WHERE h.folderId = ?";
         params.push(folderId);
     }

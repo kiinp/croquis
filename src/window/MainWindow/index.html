@@ -26,91 +26,104 @@
       </div>
     </div>
     <div style="display: flex;flex-direction: column;">
-
-      <div class="os-option-container" style="display: none;">
-        <div>
-          <div style="display: flex;">
-            <label for="filter-done">only new</label>
-            <input type="checkbox" name="filter-done" id="filter-done">
+      <div class="inform-container">
+        <div class="os-option-container" style="display: none;">
+          <div>
+            <div style="display: flex;">
+              <label for="filter-done">only new</label>
+              <input type="checkbox" name="filter-done" id="filter-done">
+            </div>
+            <br>
+            <div style="display:flex">
+              <div class="add-folder-btn">
+                <span>
+                  새폴더
+                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12.4142 5H21C21.5523 5 22 5.44772 22 6V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H10.4142L12.4142 5ZM4 5V19H20V7H11.5858L9.58579 5H4ZM11 12V9H13V12H16V14H13V17H11V14H8V12H11Z">
+                  </path>
+                </svg>
+              </div>
+              <div class="folder-form hidden">
+                <input type="text" id="folder-name-input" placeholder="폴더 이름 입력" />
+                <button id="submit-folder-btn">생성</button>
+              </div>
+            </div>
           </div>
-          <br>
-          <div style="display:flex">
-            <div class="add-folder-btn">
+          <div class="start-btn">크로키 시작</div>
+        </div>
+        <div class="history-container" style="display: none;">
+          <div class="history-option-container" style="display: flex;">
+            <div>
+              <label for="history-date-input">날짜 필터:</label>
+              <input type="text" id="history-date-input" placeholder="YYYY-MM-DD" />
+              <button id="reset-date-input">초기화</button>
+            </div>
+            <div>
+              <label for="sort-select">정렬 옵션:</label>
+              <select id="sort-select">
+                <option value="dateAsc" selected>오래된순</option>
+                <option value="dateDesc" selected>최신순</option>
+              </select>
+            </div>
+  
+            <button id="history-filter-button">필터 적용</button>
+          </div>
+          <div id="calendar" style="display: flex;"></div>
+          <div class="count">총: 0</div>
+          <div>
+            <div class="move-folder-btn">
               <span>
-                새폴더
+                폴더 이동
               </span>
+            </div>
+          </div>
+        </div>
+        <div id="global-option-container">
+          <div>
+            <div>
+              <label>
+                보기:
+                <select name="image-size" id="image-size-selector">
+                  <option value="small-view">작은 아이콘</option>
+                  <option value="medium-view" selected>보통 아이콘</option>
+                  <option value="large-view">큰 아이콘</option>
+                </select>
+              </label>
+            </div>
+            <div>
+              <label>
+                선택
+                <input type="checkbox" name="selectable-toggle" id="selectable-toggle">
+              </label>
+              <label>
+                전체
+                <input type="checkbox" name="select-all-input" id="select-all-input">
+              </label>
+            </div>
+          </div>
+  
+          <div class="grid-selector">
+            <div class="grid-option">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path
-                  d="M12.4142 5H21C21.5523 5 22 5.44772 22 6V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H10.4142L12.4142 5ZM4 5V19H20V7H11.5858L9.58579 5H4ZM11 12V9H13V12H16V14H13V17H11V14H8V12H11Z">
+                  d="M22 12.999V20C22 20.5523 21.5523 21 21 21H13V12.999H22ZM11 12.999V21H3C2.44772 21 2 20.5523 2 20V12.999H11ZM11 3V10.999H2V4C2 3.44772 2.44772 3 3 3H11ZM21 3C21.5523 3 22 3.44772 22 4V10.999H13V3H21Z">
                 </path>
               </svg>
             </div>
-            <div class="folder-form hidden">
-              <input type="text" id="folder-name-input" placeholder="폴더 이름 입력" />
-              <button id="submit-folder-btn">생성</button>
+            <div class="masonry-option">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M22 9.999V20C22 20.5523 21.5523 21 21 21H13V9.999H22ZM11 15.999V21H3C2.44772 21 2 20.5523 2 20V15.999H11ZM11 3V13.999H2V4C2 3.44772 2.44772 3 3 3H11ZM21 3C21.5523 3 22 3.44772 22 4V7.999H13V3H21Z">
+                </path>
+              </svg>
             </div>
           </div>
         </div>
-        <div class="start-btn">크로키 시작</div>
+  
       </div>
-      <div class="history-container" style="display: none;">
-        <div class="history-option-container" style="display: flex;">
-          <div>
-            <label for="history-date-input">날짜 필터:</label>
-            <input type="text" id="history-date-input" placeholder="YYYY-MM-DD" />
-            <button id="reset-date-input">초기화</button>
-          </div>
-          <div>
-            <label for="sort-select">정렬 옵션:</label>
-            <select id="sort-select">
-              <option value="dateAsc" selected>오래된순</option>
-              <option value="dateDesc" selected>최신순</option>
-            </select>
-          </div>
-
-          <button id="history-filter-button">필터 적용</button>
-        </div>
-        <div id="calendar" style="display: flex;"></div>
-        <div class="count">총: 0</div>
-      </div>
-      <div id="global-option-container">
-        <div>
-          <div>
-            <label>
-              보기:
-              <select name="image-size" id="image-size-selector">
-                <option value="small-view">작은 아이콘</option>
-                <option value="medium-view" selected>보통 아이콘</option>
-                <option value="large-view">큰 아이콘</option>
-              </select>
-            </label>
-          </div>
-          <div>
-            <label>
-              전체
-              <input type="checkbox" name="select-all-input" id="select-all-input">
-            </label>
-          </div>
-        </div>
-
-        <div class="grid-selector">
-          <div class="grid-option">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M22 12.999V20C22 20.5523 21.5523 21 21 21H13V12.999H22ZM11 12.999V21H3C2.44772 21 2 20.5523 2 20V12.999H11ZM11 3V10.999H2V4C2 3.44772 2.44772 3 3 3H11ZM21 3C21.5523 3 22 3.44772 22 4V10.999H13V3H21Z">
-              </path>
-            </svg>
-          </div>
-          <div class="masonry-option">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M22 9.999V20C22 20.5523 21.5523 21 21 21H13V9.999H22ZM11 15.999V21H3C2.44772 21 2 20.5523 2 20V15.999H11ZM11 3V13.999H2V4C2 3.44772 2.44772 3 3 3H11ZM21 3C21.5523 3 22 3.44772 22 4V7.999H13V3H21Z">
-              </path>
-            </svg>
-          </div>
-        </div>
-      </div>
-
+      
       <div id="content-main-container" class="medium-view grid-view">
 
       </div>

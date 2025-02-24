@@ -97,6 +97,10 @@ async function getUniqueFilePath(targetPath) {
     }
   }
 }
+function isValidFolderName(name) {
+  const forbiddenRegex = /[\\\/:\*\?"<>\|]/;
+  return !forbiddenRegex.test(name);
+}
 
 /**
  * Get the directory contents including files and subdirectories.
@@ -163,5 +167,6 @@ module.exports = {
   getAllDirectoryInfo,
   getUniqueFilePath,
   getDirectoryContents,
-  copyFileToTarget
+  copyFileToTarget,
+  isValidFolderName
 };

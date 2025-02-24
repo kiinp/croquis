@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>폴더 선택 및 이동</title>
+    <style>
+        /* Hide elements with the 'hidden' class */
+        .hidden {
+            display: none;
+        }
+
+        /* Basic styling for layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        select,
+        input,
+        button {
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .add-folder-btn {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .add-folder-btn svg {
+            margin-left: 5px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../index.css" />
+</head>
+
+<body>
+    <h2>폴더 선택</h2>
+    <select id="folder-select">
+    </select>
+
+    <div style="display: flex; align-items: center;">
+
+        <div class="folder-form hidden" id="folder-form">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                <path
+                    d="M12.4142 5H21C21.5523 5 22 5.44772 22 6V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H10.4142L12.4142 5ZM4 5V19H20V7H11.5858L9.58579 5H4ZM11 12V9H13V12H16V14H13V17H11V14H8V12H11Z">
+                </path>
+            </svg>
+            <input type="text" id="folder-name-input" placeholder="폴더 이름 입력" />
+        </div>
+    </div>
+
+    <button id="move-btn" style="margin-top: 20px;">이동</button>
+
+    <script>
+        let selectedList = [];
+        let folderList = [];
+        const populateFolderSelect = (folders) => {
+            const folderSelect = document.getElementById('folder-select');
+            folderSelect.innerHTML = '';
+            folders.forEach(folder => {
+                const option = document.createElement('option');
+                option.value = folder.id;
+                option.textContent = folder.folderName;
+                folderSelect.appendChild(option);
+            });
+            const newOption = document.createElement('option');
+            newOption.value = 'new';
+            newOption.textContent = '새폴더 (새로 생성)';
+            folderSelect.appendChild(newOption);
+        };
+        window.api.receive("move-folder", (_selectedList) => {
+            selectedList = _selectedList;
+        });
+        let mainDirectory = null;
+
+        function applyOptionGlobal(option) {
+            document.body.classList.remove("dark", "white");
+            document.body.classList.add(option.theme);
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            option = await window.api.getOption();
+            applyOptionGlobal(option);  
+            
+            const result = await window.api.getFolderList();
+            console.log(result);
+            if (!result.success) {
+                alert(result.msg);
+                return;
+            }
+            folderList = result.data;
+            populateFolderSelect(folderList);
+        });
+
+        const folderSelect = document.getElementById('folder-select');
+        folderSelect.addEventListener('change', (e) => {
+            const selectedValue = e.target.value;
+            const folderForm = document.getElementById('folder-form');
+            if (selectedValue === 'new') {
+                folderForm.classList.remove('hidden');
+            } else {
+                folderForm.classList.add('hidden');
+            }
+        });
+
+
+        const moveBtn = document.getElementById('move-btn');
+        moveBtn.addEventListener('click', async () => {
+            let selectedFolderId = folderSelect.value;
+            if (selectedFolderId === 'new') {
+                const folderNameInput = document.getElementById('folder-name-input');
+                const newFolderName = folderNameInput.value.trim();
+                if (newFolderName === '') {
+                    alert('폴더 이름을 입력해주세요.');
+                    return;
+                }
+                const result = await window.api.createHistoryFolder(newFolderName);
+                if (!result.success) {
+                    alert(result.msg);
+                    return;
+                }
+                selectedFolderId = result.data;
+            }
+            const result = await window.api.moveFolder({ folderId: selectedFolderId, selectedList });
+            if (!result.success) {
+                alert(result.msg);
+                return;
+            }
+            alert("complete.")
+            window.close();
+        });
+    </script>
+</body>
+
+</html>

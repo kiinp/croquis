@@ -10,6 +10,15 @@
     height: 100%;
     overflow: auto;
 }
+
+.subcontent-container .history input {
+    display: none;
+}
+
+.subcontent-container.selectable .history input {
+    display: block;
+}
+
 .history-detail-container {
     flex: 1;
 }
@@ -48,19 +57,19 @@
     border: 1px solid var(--content-item-border-color);
 }
 
-.small-view .content-item {
+.small-view .content-container .content-item, .content-folder-container .content-item {
     width: 100px;
 
     line-height: 100px;
 }
 
-.medium-view .content-item {
+.medium-view .content-container .content-item {
     width: 200px;
 
     line-height: 200px;
 }
 
-.large-view .content-item {
+.large-view .content-container .content-item {
     width: 300px;
 
     line-height: 300px;

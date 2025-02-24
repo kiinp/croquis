@@ -9,8 +9,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.api.receive('option-changed', (option) => {
         applyOptionGlobal(option);
     });
+    const result = await window.api.getFolderList();
+    console.log(result);
+    if (!result.success) {
+        alert(result.msg);
+        return;
+    }
+    folderList = result.data;
+    populateFolderSelect(folderList);
 });
 
+const populateFolderSelect = (folders) => {
+    const folderSelect = document.getElementById('folder-select');
+    folderSelect.innerHTML = '';
+    folders.forEach(folder => {
+        const option = document.createElement('option');
+        option.value = folder.id;
+        option.textContent = folder.folderName;
+        folderSelect.appendChild(option);
+    });
+    // if(folderSelect.value){
+    //     folderSelect
+    // }
+};
 
 window.api.receive('send-data-to-croquis-option', async (imageList) => {
     const startBtn = document.querySelector("div.start-btn");
@@ -51,6 +72,7 @@ function initOptionEl(option) {
     const browseSaveButton = document.getElementById('browse-save');
     const windowWidthEl = document.querySelector("input#custom-window-input-width");
     const windowHeightEl = document.querySelector("input#custom-window-input-height");
+    const folderSelect = document.getElementById('folder-select');
 
     // Set initial values from the option object
     savePathInput.value = option.savePath || "";
@@ -63,7 +85,8 @@ function initOptionEl(option) {
     windowWidthEl.value = option.window?.width || "200";
     windowHeightEl.value = option.window?.height || "300";
     timerSelect.value = option.timer?.maxTime.toString() || "10";
-    if(!timerSelect.value){
+    folderSelect.value = option.saveFolder || "1";
+    if (!timerSelect.value) {
         timerSelect.value = "custom";
         customTimerInput.style.display = 'inline';
     } else {
@@ -87,6 +110,7 @@ function initOptionEl(option) {
 function getCroquisOption() {
     // Get DOM elements
     const timerSelect = document.getElementById('timer-select');
+    const folderSelect = document.getElementById('folder-select');
     const customTimerInput = document.getElementById('custom-timer-input');
     const autoskipCheckbox = document.getElementById('autoskip-checkbox');
     const saveCheckbox = document.getElementById('auto-save-checkbox');
@@ -138,6 +162,7 @@ function getCroquisOption() {
         },
         capture: isCapture,
         savePath: savePathInput.value,
+        saveFolder: folderSelect.value,
     };
 
     // Save the option if the save option checkbox is checked

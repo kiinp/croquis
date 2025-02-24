@@ -32,7 +32,6 @@ class Croquis {
         this.isSkipping = false;
         this.historyIdList = [];
         this.timerRequestId = null;
-        this.folderId = 1;
         this.isAutoSkipped = false;
 
         this.applyOption();
@@ -231,7 +230,7 @@ class Croquis {
             date: new Date() + "",
             maxTime: this.option.timer.maxTime,
             realTime: this.getCurrentTime(),
-            folderId: this.folderId
+            folderId: this.option.saveFolder,
         }, this.getCurrentImagePath());
         if (!result.success) {
             return null;
