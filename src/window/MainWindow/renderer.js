@@ -65,6 +65,7 @@ function bindGlobalEvents() {
 
   const addFolderBtn = document.querySelector("div.add-folder-btn");
   const moveFolderBtn = document.querySelector("div.move-folder-btn");
+  const exportImagesBtn = document.querySelector("div.export-images-btn");
   
   const folderNameInput = document.querySelector("input#folder-name-input");
   const addFolderSubmitBtn = document.querySelector("button#submit-folder-btn");
@@ -72,6 +73,16 @@ function bindGlobalEvents() {
   const selectAllInput = document.querySelector("input#select-all-input");
   const selectableInput = document.querySelector("input#selectable-toggle");
 
+  if (exportImagesBtn) {
+    exportImagesBtn.addEventListener("click", () => {
+      if(!mainDirectory){
+        return;
+      }
+      if(mainDirectory instanceof HistoryDirectoryWindow){
+        mainDirectory.exportImages();
+      }
+    });
+  }
 
   if (selectAllInput) {
     selectAllInput.addEventListener("change", () => {
@@ -728,17 +739,23 @@ class HistoryDirectoryWindow extends DirectoryWindow {
     }
   }
 
-  setHistorySelectedList() {
-    this.selectedList = mainWindowContent.getSelectedList().map(item => item.imagePath);
-  }
-
   moveFolder() {
-    this.setHistorySelectedList();
-    if(this.selectedList.length == 0){
+    const selectedList = mainWindowContent.getSelectedList().map(item => item.imagePath);
+    if(selectedList.length == 0){
       this.handleError("select at leat one history");
       return;
     }
-    window.api.send("move-folder", this.selectedList);
+    window.api.send("move-folder", selectedList);
+  }
+
+  exportImages() {
+    const selectedList = mainWindowContent.getSelectedList().map(item =>  {return{filePath: item.filePath, imagePath: item.imagePath}});
+
+    if(selectedList.length == 0){
+      this.handleError("select at leat one history");
+      return;
+    }
+    window.api.send("export-images", selectedList);
   }
 }
 

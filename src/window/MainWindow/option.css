@@ -78,23 +78,22 @@
     border-radius: 5px;
 }
 
-.move-folder-btn {
+.selection-container {
+    width: fit-content;
+    position: absolute;
+    right: 100px;
+}
+.selection-btn {
     justify-content: center; 
     margin-right: 10px;
     height: 20px;
     padding: 3px;
     border-radius: 5px;
     width: fit-content;
-    position: absolute;
-    right: 100px;
-}
-
-.add-folder-btn > span , .move-folder-btn > span{
-    margin-right: 3px;
 }
 
 
-.add-folder-btn:hover,.move-folder-btn:hover {
+.add-folder-btn:hover,.selection-btn:hover {
     cursor: pointer;
     background-color: var(--add-folder-btn-hover-color);
 }

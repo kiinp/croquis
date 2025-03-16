@@ -8,6 +8,7 @@ let croquisOptionWindow = null;
 let folderWindow = null;
 let optionWindow = null;
 let mainWindow = null;
+let exportWindow = null;
 /**
  * Create the main application window.
  * @returns {BrowserWindow}
@@ -160,6 +161,31 @@ function createOptionWindow() {
   // optionWindow.webContents.openDevTools();
   return optionWindow;
 }
+
+
+/**
+ * 
+ * @returns {BrowserWindow}
+ */
+function createExportWindow() {
+  const {scaleFactor} = screen.getPrimaryDisplay();
+
+  exportWindow = new BrowserWindow({
+    width: Math.round(450 * scaleFactor),
+    height: Math.round(400 * scaleFactor),
+    center: true,
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, "..", 'preload.js')
+    },
+    icon: path.join(__dirname, '..', '..', 'assets/icons/C_icon.png')
+  });
+  exportWindow.loadFile(path.join(__dirname, "..", "window", "ExportWindow", 'index.html'));
+  // optionWindow.webContents.openDevTools();
+  return exportWindow;
+}
+
 /**
  * 
  * @returns {BrowserWindow}
@@ -205,6 +231,14 @@ function getFolderWindow() {
   return folderWindow;
 }
 
+/**
+ * 
+ * @returns {BrowserWindow}
+ */
+function getExportWindow() {
+  return exportWindow;
+}
+
 module.exports = {
   createMainWindow,
   createCroquisWindow,
@@ -212,10 +246,12 @@ module.exports = {
   createCroquisOptionWindow,
   createOptionWindow,
   createFolderWindow,
+  createExportWindow,
   getCroquisWindow,
   getOverlayWindow,
   getCroquisOptionWindow,
   getOptionWindow,
   getMainWindow,
-  getFolderWindow
+  getFolderWindow,
+  getExportWindow
 };

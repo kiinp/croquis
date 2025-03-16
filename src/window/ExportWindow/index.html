@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>이미지 합치기 미리보기</title>
+    <style>
+        /* Basic container styling */
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .left-panel,
+        .right-panel {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .preview-border {
+            border: 2px solid #000;
+            padding: 10px;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .preview-image {
+            background-color: #eee;
+            text-align: center;
+            line-height: 1.5;
+            margin: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Left Panel: Input fields -->
+        <div class="left-panel">
+            <h2>설정 입력</h2>
+
+            <!-- Image A 설정 -->
+            <div class="input-group">
+                <h3>이미지 A 설정</h3>
+                <label for="a-width">가로 (px): </label>
+                <input type="number" id="a-width" value="100"><br><br>
+
+                <label for="a-height">세로 (px): </label>
+                <input type="number" id="a-height" value="160"><br><br>
+
+                <!-- Checkbox to toggle ratio mode for A -->
+                <label for="a-use-ratio">
+                    <input type="checkbox" id="a-use-ratio"> 비율 사용 (세로 입력 비활성화)
+                </label><br><br>
+
+                <!-- Ratio selection for A -->
+                <div id="a-ratio-select" class="hidden">
+                    <label for="a-ratio">비율 선택: </label>
+                    <select id="a-ratio">
+                        <option value="original">원본</option>
+                        <option value="1:1">1:1</option>
+                        <option value="1:1.6">1:1.6</option>
+                        <option value="1.6:1">1.6:1</option>
+                        <option value="custom">커스텀</option>
+                    </select>
+                </div>
+
+                <!-- Custom ratio input for A -->
+                <div id="a-custom-ratio" class="hidden">
+                    <label for="a-custom-width">커스텀 가로 비율: </label>
+                    <input type="number" id="a-custom-width" step="0.1" value="1">
+                    <label for="a-custom-height">커스텀 세로 비율: </label>
+                    <input type="number" id="a-custom-height" step="0.1" value="1">
+                </div>
+            </div>
+
+            <!-- Image B 설정 -->
+            <div class="input-group">
+                <h3>이미지 B 설정</h3>
+                <label for="b-width">가로 (px): </label>
+                <input type="number" id="b-width" value="100"><br><br>
+
+                <label for="b-height">세로 (px): </label>
+                <input type="number" id="b-height" value="160"><br><br>
+
+                <!-- Checkbox to toggle ratio mode for B -->
+                <label for="b-use-ratio">
+                    <input type="checkbox" id="b-use-ratio"> 비율 사용 (세로 입력 비활성화)
+                </label><br><br>
+
+                <!-- Ratio selection for B -->
+                <div id="b-ratio-select" class="hidden">
+                    <label for="b-ratio">비율 선택: </label>
+                    <select id="b-ratio">
+                        <option value="original">원본</option>
+                        <option value="1:1">1:1</option>
+                        <option value="1:1.6">1:1.6</option>
+                        <option value="1.6:1">1.6:1</option>
+                        <option value="custom">커스텀</option>
+                    </select>
+                </div>
+
+                <!-- Custom ratio input for B -->
+                <div id="b-custom-ratio" class="hidden">
+                    <label for="b-custom-width">커스텀 가로 비율: </label>
+                    <input type="number" id="b-custom-width" step="0.1" value="1">
+                    <label for="b-custom-height">커스텀 세로 비율: </label>
+                    <input type="number" id="b-custom-height" step="0.1" value="1">
+                </div>
+            </div>
+
+            <!-- 이미지 A와 B 사이의 거리 -->
+            <div class="input-group">
+                <label for="image-gap">이미지 간 거리 (px): </label>
+                <input type="number" id="image-gap" value="10">
+            </div>
+
+            <!-- 전체 padding -->
+            <div class="input-group">
+                <label for="total-padding">전체 패딩 (px): </label>
+                <input type="number" id="total-padding" value="10">
+            </div>
+
+            <label for="is-horizon">
+                <input type="checkbox" id="is-horizon"> 가로 정렬
+            </label>
+            <br>
+            <br>
+            <!-- 설정 출력 버튼 -->
+            <button id="output-btn">설정 출력</button>
+
+            <!-- 출력 영역 -->
+            <pre id="output"></pre>
+        </div>
+
+        <!-- Right Panel: Preview -->
+        <div class="right-panel">
+            <h2>미리보기</h2>
+            <!-- Preview border container -->
+            <div class="preview-conatainer" id="preview-conatainer">
+            </div>
+        </div>
+    </div>
+    <script type="module" src="renderer.js"></script>
+</body>
+
+</html>

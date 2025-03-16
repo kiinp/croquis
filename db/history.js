@@ -60,6 +60,15 @@ const saveHistory = (fieldValues, filePath) => {
         const info = insertFile.run(path.basename(filePath), filePath, path.dirname(filePath));
         file = { id: info.lastInsertRowid };
     }
+
+    let folder = db.prepare('SELECT * FROM folder WHERE id = ?').get(fieldValues.folderId);
+
+    if (!folder) {
+        const firstFolder = db.prepare('SELECT * FROM folder ORDER BY id ASC LIMIT 1').get();
+        if (firstFolder) {
+            fieldValues.folderId = firstFolder.id;
+        }
+    }
     if (fieldValues.folderId) {
         db.prepare('INSERT OR IGNORE INTO folder_file (folderId, fileId) VALUES (?, ?)').run(fieldValues.folderId, file.id);
     }

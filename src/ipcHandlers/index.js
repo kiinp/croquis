@@ -94,6 +94,21 @@ ipcMain.on('move-folder', (event, selectedList)=>{
 })
 
 
+ipcMain.on('export-images', (event, selectedList)=>{
+  let exportWin = windowManager.getExportWindow();
+  if(!selectedList || selectedList.length == 0) {
+    return;
+  }
+  if (exportWin && !exportWin.isDestroyed()) {
+    exportWin.close();
+  } 
+  exportWin = windowManager.createExportWindow();
+  exportWin.show();
+  exportWin.focus();
+
+  exportWin.webContents.send("export-window", selectedList);
+})
+
 module.exports = {
   optionHandler,
   directoryHandler,

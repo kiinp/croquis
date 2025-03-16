@@ -61,7 +61,7 @@ class MainWindowContent {
         case "history":
           itemDiv.className = "content-item history";
           itemDiv.innerHTML = `
-            <input type="checkbox" id="content-item${index}" data-image-path="${item.imagePath}"/>
+            <input type="checkbox" id="content-item${index}" data-file-path="${item.history.filePath}" data-image-path="${item.imagePath}"/>
             <label for="content-item${index}">
               <img src="${item.imagePath}" alt="${item.imageName}" class="image-preview" />
             </label>
@@ -102,6 +102,7 @@ class MainWindowContent {
   toggleSelection = (checkbox) => {
     const filePath = checkbox.dataset.filePath;
     const imagePath = checkbox.dataset.imagePath;
+
     if (checkbox.checked) {
       const newOrder = this.getNewOrder();
       checkbox.dataset.selectedOrder = newOrder;
