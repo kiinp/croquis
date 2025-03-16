@@ -22,9 +22,10 @@ class Croquis {
      * @param {import("../../type").CroquisOption} option 
      */
     constructor(imageList, option = {}) {
-        this.croquisUI = new CroquisUI(this);
         this.imageList = imageList;
         this.option = option;
+        this.croquisUI = new CroquisUI(this);
+
         this.currentIndex = 0;
         this.startTime = 0;
         this.elapsedTime = 0;
@@ -247,12 +248,22 @@ class Croquis {
 
 class CroquisUI {
     constructor(croquis) {
+        /** @type {Croquis} */
         this.croquis = croquis;
         this.mainContainer = document.querySelector("div.main-container");
         this.imageEl = this.mainContainer.querySelector("img.current-image");
         this.timeEl = this.mainContainer.querySelector("span.timer");
         this.uiContainer = document.querySelector("div.ui-container");
         this.bindEventToUI();
+        this.applyOptionToUI();
+    }
+
+    applyOptionToUI() {
+        if(this.croquis.option.grayOption){
+            this.imageEl.style.filter = "grayscale(100%)";
+        } else {
+            this.imageEl.style.filter = "grayscale(0%)";
+        }
     }
 
     bindEventToUI() {
@@ -276,8 +287,8 @@ class CroquisUI {
         });
 
         document.addEventListener("keydown", (event) => {
-            if (event.ctrlKey && event.key === "c") {
-                window.api.copyImageFromFilePath(this.croquis.getCurrentImagePath());
+            if (event.ctrlKey && (event.key === "c" || event.key ==="C" || event.key === "ㅊㅊ")) {
+                window.api.copyImageFromFilePath(this.croquis.getCurrentImagePath(), {grayOption: this.croquis.option.grayOption});
             }
         });
     }

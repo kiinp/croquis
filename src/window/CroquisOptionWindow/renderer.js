@@ -74,6 +74,9 @@ function initOptionEl(option) {
     const windowHeightEl = document.querySelector("input#custom-window-input-height");
     const folderSelect = document.getElementById('folder-select');
 
+    const grayOptionCheckbox = document.getElementById('gray-option-checkbox');
+
+    grayOptionCheckbox.checked = option.grayOption || false;
     // Set initial values from the option object
     savePathInput.value = option.savePath || "";
     autoskipCheckbox.checked = option.auto?.skip || false;
@@ -120,6 +123,8 @@ function getCroquisOption() {
     const saveOptionCheckbox = document.getElementById('save-option-checkbox');
     const windowWidthEl = document.querySelector("input#custom-window-input-width");
     const windowHeightEl = document.querySelector("input#custom-window-input-height");
+    const grayOptionCheckbox = document.getElementById('gray-option-checkbox');
+    
 
     // Determine timer value based on selection
     let timerValue;
@@ -135,6 +140,7 @@ function getCroquisOption() {
     const isCapture = captureCheckbox ? captureCheckbox.checked : false;
     const isAutoCapture = autoCaptureCheckbox ? autoCaptureCheckbox.checked : false;
     const isSaveOption = saveOptionCheckbox ? saveOptionCheckbox.checked : false;
+    const isGrayOption = grayOptionCheckbox ? grayOptionCheckbox.checked : false;
 
     // Get window dimensions
     const windowWidth = windowWidthEl ? windowWidthEl.value : "0";
@@ -163,6 +169,7 @@ function getCroquisOption() {
         capture: isCapture,
         savePath: savePathInput.value,
         saveFolder: folderSelect.value,
+        grayOption: isGrayOption
     };
 
     // Save the option if the save option checkbox is checked

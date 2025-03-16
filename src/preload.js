@@ -10,8 +10,8 @@ contextBridge.exposeInMainWorld('api', {
     moveFolder: async (data) => {
         return await ipcRenderer.invoke('move-folder', data);
     },
-    copyImageFromFilePath: async (filePath) => {
-        return await ipcRenderer.invoke('copy-image-to-clipboard', filePath);
+    copyImageFromFilePath: async (filePath, option) => {
+        return await ipcRenderer.invoke('copy-image-to-clipboard', filePath, option);
     },
     getWindowSize: async () => {
         return await ipcRenderer.invoke('get-window-size');

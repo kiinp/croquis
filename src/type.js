@@ -124,6 +124,7 @@
  * @property {boolean} capture capture when save
  * @property {string} savePath
  * @property {string} saveFolder
+ * @property {boolean} grayOption
  */
 
 //#endregion

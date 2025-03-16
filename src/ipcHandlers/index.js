@@ -13,21 +13,43 @@ const croquisHandler = require('./croquisHandlers');
 const windowManager = require('../modules/windowManager');
 
 
-ipcMain.handle("copy-image-to-clipboard", (event, filePath) => {
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      console.error("Error reading the image file:", err);
-      return;
-    }
-    const image = nativeImage.createFromBuffer(data);
+
+
+ipcMain.handle("copy-image-to-clipboard", async (event, filePath, option) => {
+  try {
+    const data = await fs.promises.readFile(filePath);
+    let image = nativeImage.createFromBuffer(data);
+
     if (image.isEmpty()) {
-      console.error(
-        "nativeImage is empty. The image might not be loaded correctly."
-      );
+      console.error("nativeImage is empty. The image might not be loaded correctly.");
       return;
     }
-    clipboard.writeImage(image);
-  });
+    if(option.grayOption){
+      clipboard.writeImage(image);
+    }
+    
+    
+    const bitmap = image.toBitmap();
+    const width = image.getSize().width;
+    const height = image.getSize().height;
+
+    for (let i = 0; i < bitmap.length; i += 4) {
+      const r = bitmap[i];
+      const g = bitmap[i + 1];
+      const b = bitmap[i + 2];
+
+      const gray = 0.2126*r+0.7152*g+0.0722*b;
+      bitmap[i] = gray; // R
+      bitmap[i + 1] = gray; // G
+      bitmap[i + 2] = gray; // B
+    }
+    const grayImage = nativeImage.createFromBitmap(bitmap, { width, height });
+
+    clipboard.writeImage(grayImage);
+
+  } catch (err) {
+    console.error("error:", err);
+  }
 });
 
 

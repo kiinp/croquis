@@ -54,6 +54,7 @@ function createCroquisWindow() {
     icon: path.join(__dirname, "..", "..", 'assets/icons/C_icon.png')
   });
   croquisWindow.loadFile(path.join(__dirname, "..", "window", 'CroquisWindow', 'index.html'));
+  // croquisWindow.webContents.openDevTools();
   return croquisWindow;
 }
 /**
