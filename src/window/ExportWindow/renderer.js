@@ -354,7 +354,7 @@ class SecondWindowUI {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.onload = () => {
-                resolve(img.naturalWidth / img.naturalHeight);
+                resolve(img.naturalHeight / img.naturalWidth);
             };
             img.onerror = (error) => {
                 reject(new Error(`Failed to load image: ${imagePath}`));

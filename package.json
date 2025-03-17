@@ -1,7 +1,7 @@
 {
   "name": "croquis",
   "productName": "croquis",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Croquis",
   "main": "src/main.js",
   "build": {
