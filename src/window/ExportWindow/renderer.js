@@ -70,10 +70,12 @@ class FirstWindowLogic {
             }
         }
 
-        const boxList = [
+        let boxList = [
             { name: "orgin", width: aWidth, height: aHeight },
             { name: "drawing", width: bWidth, height: bHeight },
         ];
+
+        boxList = boxList.filter((item)=>item.width != 0);
 
         const option = {
             padding: inputData.padding,
@@ -453,10 +455,13 @@ class SecondWindowUI {
                     bHeight = bWidth * (customH / customW);
                 }
             }
-            const boxList = [
+            let boxList = [
                 { name: item.filePath, width: aWidth, height: aHeight },
                 { name: item.imagePath, width: bWidth, height: bHeight },
             ];
+
+            boxList = boxList.filter((item)=>item.width != 0);
+
             return boxList;
         }));
 
