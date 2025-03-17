@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>이미지 합치기 미리보기</title>
+    <link rel="stylesheet" href="../../index.css">
     <style>
         /* Basic container styling */
         .container {
@@ -40,15 +41,13 @@
             margin-bottom: 15px;
         }
     </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <!-- Left Panel: Input fields -->
+    <div class="container first">
         <div class="left-panel">
             <h2>설정 입력</h2>
-
-            <!-- Image A 설정 -->
             <div class="input-group">
                 <h3>이미지 A 설정</h3>
                 <label for="a-width">가로 (px): </label>
@@ -83,14 +82,13 @@
                 </div>
             </div>
 
-            <!-- Image B 설정 -->
             <div class="input-group">
                 <h3>이미지 B 설정</h3>
                 <label for="b-width">가로 (px): </label>
-                <input type="number" id="b-width" value="100"><br><br>
+                <input type="number" id="b-width" value="400"><br><br>
 
                 <label for="b-height">세로 (px): </label>
-                <input type="number" id="b-height" value="160"><br><br>
+                <input type="number" id="b-height" value="640"><br><br>
 
                 <!-- Checkbox to toggle ratio mode for B -->
                 <label for="b-use-ratio">
@@ -118,34 +116,69 @@
                 </div>
             </div>
 
-            <!-- 이미지 A와 B 사이의 거리 -->
             <div class="input-group">
                 <label for="image-gap">이미지 간 거리 (px): </label>
                 <input type="number" id="image-gap" value="10">
             </div>
 
-            <!-- 전체 padding -->
             <div class="input-group">
                 <label for="total-padding">전체 패딩 (px): </label>
                 <input type="number" id="total-padding" value="10">
             </div>
 
             <label for="is-horizon">
-                <input type="checkbox" id="is-horizon"> 가로 정렬
+                <input type="checkbox" id="is-horizon" checked> 가로 정렬
             </label>
             <br>
             <br>
-            <!-- 설정 출력 버튼 -->
-            <button id="output-btn">설정 출력</button>
+            <button id="next-btn">다음</button>
+        </div>
+        <div class="right-panel">
+            <h2>미리보기</h2>
+            <!-- Preview border container -->
+            <div class="preview-conatainer" id="preview-conatainer">
+            </div>
+        </div>
+    </div>
+    <div class="container second hidden" >
+        <div class="left-panel">
+            <h2>설정 입력</h2>
+
+            <div class="input-group">
+                <label for="image-vGap">수직 이미지 간 거리 (px): </label>
+                <input type="number" id="image-vGap" value="10">
+            </div>
+            <div class="input-group">
+                <label for="image-hGap">수평 이미지 간 거리 (px): </label>
+                <input type="number" id="image-hGap" value="10">
+            </div>
+            <div class="input-group">
+                <label for="total-padding">전체 패딩 (px): </label>
+                <input type="number" id="total-padding" value="10">
+            </div>
+
+            <div class="input-group">
+                <label for="limit-per-line">한 줄당 박스 수: </label>
+                <input type="number" id="limit-per-line" value="5">
+            </div>
+
+            <button id="prev-btn">이전</button>
+            <div>
+                <div id="browse-save">
+                    저장 경로:
+                    <input type="text" id="savePath" readonly>
+                    <span>📂</span>
+                </div>
+                <button id="next-btn">저장</button>
+            </div>
+            
 
             <!-- 출력 영역 -->
             <pre id="output"></pre>
         </div>
 
-        <!-- Right Panel: Preview -->
         <div class="right-panel">
             <h2>미리보기</h2>
-            <!-- Preview border container -->
             <div class="preview-conatainer" id="preview-conatainer">
             </div>
         </div>

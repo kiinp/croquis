@@ -4,6 +4,9 @@ contextBridge.exposeInMainWorld('api', {
     createHistoryFolder: async (folderName) => {
         return await ipcRenderer.invoke('create-history-folder', folderName);
     },
+    sendMergeRequest: async (finalLayoutData, outputFilePath) => {
+        return await ipcRenderer.invoke('merge-images', finalLayoutData, outputFilePath);
+    },
     getFolderList: async () => {
         return await ipcRenderer.invoke('get-folder-list');
     },

@@ -182,7 +182,7 @@ function createExportWindow() {
     icon: path.join(__dirname, '..', '..', 'assets/icons/C_icon.png')
   });
   exportWindow.loadFile(path.join(__dirname, "..", "window", "ExportWindow", 'index.html'));
-  // optionWindow.webContents.openDevTools();
+  // exportWindow.webContents.openDevTools();
   return exportWindow;
 }
 
