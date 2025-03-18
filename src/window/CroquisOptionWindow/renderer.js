@@ -75,7 +75,9 @@ function initOptionEl(option) {
     const folderSelect = document.getElementById('folder-select');
 
     const grayOptionCheckbox = document.getElementById('gray-option-checkbox');
+    const shuffleOptionCheckbox = document.getElementById('shuffle-option-checkbox');
 
+    shuffleOptionCheckbox.checked = option.shuffleOption || false;
     grayOptionCheckbox.checked = option.grayOption || false;
     // Set initial values from the option object
     savePathInput.value = option.savePath || "";
@@ -89,6 +91,7 @@ function initOptionEl(option) {
     windowHeightEl.value = option.window?.height || "300";
     timerSelect.value = option.timer?.maxTime.toString() || "10";
     folderSelect.value = option.saveFolder || "1";
+
     if (!timerSelect.value) {
         timerSelect.value = "custom";
         customTimerInput.style.display = 'inline';
@@ -124,6 +127,7 @@ function getCroquisOption() {
     const windowWidthEl = document.querySelector("input#custom-window-input-width");
     const windowHeightEl = document.querySelector("input#custom-window-input-height");
     const grayOptionCheckbox = document.getElementById('gray-option-checkbox');
+    const shuffleOptionCheckbox = document.getElementById('shuffle-option-checkbox');
     
 
     // Determine timer value based on selection
@@ -141,6 +145,7 @@ function getCroquisOption() {
     const isAutoCapture = autoCaptureCheckbox ? autoCaptureCheckbox.checked : false;
     const isSaveOption = saveOptionCheckbox ? saveOptionCheckbox.checked : false;
     const isGrayOption = grayOptionCheckbox ? grayOptionCheckbox.checked : false;
+    const isShuffleOption = shuffleOptionCheckbox ? shuffleOptionCheckbox.checked : false;
 
     // Get window dimensions
     const windowWidth = windowWidthEl ? windowWidthEl.value : "0";
@@ -169,7 +174,8 @@ function getCroquisOption() {
         capture: isCapture,
         savePath: savePathInput.value,
         saveFolder: folderSelect.value,
-        grayOption: isGrayOption
+        grayOption: isGrayOption,
+        shuffleOption: isShuffleOption
     };
 
     // Save the option if the save option checkbox is checked

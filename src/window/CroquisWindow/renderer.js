@@ -40,7 +40,18 @@ class Croquis {
     }
     applyOption() {
         window.api.send("resize-window", { width: this.option.window.width, height: this.option.window.height });
+        if(this.option.shuffleOption){
+            this.imageList = this.shuffleList(this.imageList);
+        }
     }
+    shuffleList(list) {
+        for (let i = list.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [list[i], list[j]] = [list[j], list[i]];
+        }
+        return list;
+    }
+
     /**
      * init alreadySave, currentImage, resetTimer
      */

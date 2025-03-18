@@ -125,6 +125,7 @@
  * @property {string} savePath
  * @property {string} saveFolder
  * @property {boolean} grayOption
+ * @property {boolean} shuffleOption
  */
 
 //#endregion
