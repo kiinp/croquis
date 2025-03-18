@@ -26,6 +26,37 @@ async function saveBase64File(dataUrl, savePath) {
   return fullPath;
 }
 
+function tryDownloadFile(downloadUrl, filePath) {
+  return new Promise((resolve, reject) => {
+    https
+      .get(downloadUrl, (response) => {
+        if (response.statusCode !== 200) {
+          fs.unlink(filePath, () => {});
+          return reject(new Error("HTTP Error: " + response.statusCode));
+        }
+
+        const fileStream = fs.createWriteStream(filePath);
+        response.pipe(fileStream);
+
+        fileStream.on("finish", () => {
+          fileStream.close();
+          resolve(filePath);
+        });
+
+        fileStream.on("error", (err) => {
+          fs.unlink(filePath, () => {});
+          reject(err);
+        });
+      })
+      .on("error", (err) => {
+        fs.unlink(filePath, () => {});
+        reject(err);
+      });
+  });
+}
+
+
+
 /**
  * Download a file from the internet using HTTPS.
  * @param {string} url - The URL of the file.
@@ -39,6 +70,11 @@ async function downloadFile(url, savePath) {
   if (!url.startsWith('http://') && !url.startsWith('https://')) {
     throw new Error('Unsupported URL protocol: ' + url);
   }
+  const originalUrl = url;
+  if(url.startsWith('https://i.pinimg.com/')){
+    url = url.replace(/\/\d+x\//, '/originals/');
+  }
+  console.log(url)
   const fileName = path.basename(new URL(url).pathname);
   let fullPath = path.join(savePath, fileName);
   fullPath = await fileUtils.getUniqueFilePath(fullPath);
@@ -47,25 +83,19 @@ async function downloadFile(url, savePath) {
     throw new Error('No file extension found in URL: ' + url);
   }
   return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
-      if (response.statusCode !== 200) {
-        fs.unlink(fullPath, () => { }); // Try to delete the incomplete file
-        return reject(new Error('HTTP Error: ' + response.statusCode));
-      }
-      const fileStream = fs.createWriteStream(fullPath);
-      response.pipe(fileStream);
-      fileStream.on('finish', () => {
-        fileStream.close();
-        resolve(fullPath);
+    tryDownloadFile(url, fullPath)
+      .then((filePath) => {
+        resolve(filePath);
+      })
+      .catch((err) => {
+        if (url !== originalUrl) {
+          tryDownloadFile(originalUrl, fullPath)
+            .then((filePath) => resolve(filePath))
+            .catch((error) => reject(error));
+        } else {
+          reject(err);
+        }
       });
-      fileStream.on('error', (err) => {
-        fs.unlink(fullPath, () => { }); // Delete file on error
-        reject(err);
-      });
-    }).on('error', (err) => {
-      console.error("Download error:", err);
-      reject(err);
-    });
   });
 }
 

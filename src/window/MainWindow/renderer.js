@@ -462,6 +462,7 @@ class OsDirectoryWindow extends DirectoryWindow {
     if (htmlData) {
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = htmlData;
+      console.log(tempDiv);
       const img = tempDiv.querySelector("img");
       if (img?.src) {
         url = img.src;
